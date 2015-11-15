@@ -935,6 +935,29 @@ public class ThreadPoolExecutorImpl implements ThreadPoolExecutor {
     }
 
     /**
+     *
+     * @param corePoolSize
+     * @param maximumPoolSize
+     * @param keepAliveTime
+     * @param unit
+     * @param workQueue
+     * @param initCoreThreads the number of Threads which started when Executor created.
+     */
+    public ThreadPoolExecutorImpl(int corePoolSize,
+                                  int maximumPoolSize,
+                                  long keepAliveTime,
+                                  TimeUnit unit,
+                                  BlockingQueue<String> workQueue, int initCoreThreads) {
+        this(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue,
+                Executors.defaultThreadFactory(), defaultHandler);
+        for (int i=0;i<initCoreThreads;i++){
+            addWorker(null, true);
+        }
+    }
+
+
+
+    /**
      * Creates a new {@code ThreadPoolExecutor} with the given initial
      * parameters and default rejected execution handler.
      *
@@ -1051,6 +1074,19 @@ public class ThreadPoolExecutorImpl implements ThreadPoolExecutor {
         this.keepAliveTime = unit.toNanos(keepAliveTime);
         this.threadFactory = threadFactory;
         this.handler = handler;
+    }
+
+    public ThreadPoolExecutorImpl(int corePoolSize,
+                                  int maximumPoolSize,
+                                  long keepAliveTime,
+                                  TimeUnit unit,
+                                  BlockingQueue<String> workQueue,
+                                  ThreadFactory threadFactory,
+                                  BRejectedExecutionHandler handler, int initCoreThreads) {
+        this(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, handler);
+        for (int i=0;i<initCoreThreads;i++){
+            addWorker(null, true);
+        }
     }
     
     
